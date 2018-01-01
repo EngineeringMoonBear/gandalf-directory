@@ -21,6 +21,10 @@
   </div>
 <% end %>
 
+<hr>
+<%= gravatar_tag current_user.email, size: 100 %>
+<%= link_to 'change avatar', 'http://en.gravatar.com' %>
+
 <h3>Cancel my account</h3>
 
 <p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>

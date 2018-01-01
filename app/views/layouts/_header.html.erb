@@ -13,7 +13,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Places<span class="sr-only">(current)</span></a></li>
+        <li><%= link_to 'Places', places_path %></li>
 
 
       </ul>
@@ -24,8 +24,14 @@
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Login</a></li>
-        <li><a href="#">Signup</a></li>
+
+        <% if current_user %>
+          <li><%= link_to 'Settings', edit_user_registration_path %> </li>
+          <li><%= link_to 'Logout', destroy_user_session_path, method: :delete %></li>
+        <% else %>
+          <li><%= link_to 'Login', new_user_session_path %></li>
+          <li><%= link_to 'Signup', new_user_registration_path %></li>
+        <% end %>
 
 
       </ul>
