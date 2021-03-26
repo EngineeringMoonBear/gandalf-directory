@@ -7,18 +7,11 @@ jobs:
       - image: circleci/ruby:2.6.3-stretch-node
     executor: ruby/default
     steps:
-  - run: bundle clean --force
-  - restore_cache:
-      keys:
-        # when lock file changes, use increasingly general patterns to restore cache
-        - v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-        - v1-gem-cache-{{ arch }}-{{ .Branch }}-
-        - v1-gem-cache-{{ arch }}-
-  - run: bundle install
-  - save_cache:
-      paths:
-        - ~/.bundle
-      key: v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+ - save_cache:
+          key: my-cache
+          paths:
+            - my-file.txt
+            - my-project/my-dependencies-directory
 workflows:
   my-workflow:
       when:
