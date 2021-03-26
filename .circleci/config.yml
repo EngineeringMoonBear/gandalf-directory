@@ -1,15 +1,27 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@0.1.2 
-
 jobs:
   build:
     docker:
       - image: circleci/ruby:2.6.3-stretch-node
     executor: ruby/default
     steps:
-      - checkout
-      - run:
-          name: Which bundler?
-          command: bundle -v
-      - ruby/bundle-install
+  - run: bundle clean --force
+  - restore_cache:
+      keys:
+        # when lock file changes, use increasingly general patterns to restore cache
+        - v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+        - v1-gem-cache-{{ arch }}-{{ .Branch }}-
+        - v1-gem-cache-{{ arch }}-
+  - run: bundle install
+  - save_cache:
+      paths:
+        - ~/.bundle
+      key: v1-gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+workflows:
+  my-workflow:
+      when:
+        or:
+          - equal: [ master, << pipeline.git.branch >> ]
+          - equal: [ staging, << pipeline.git.branch >> ]
